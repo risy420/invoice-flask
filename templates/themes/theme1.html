@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Preview - Theme 2 (Premium)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles for screen */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 30px;
+            background-color: #f8f9fa; /* Light background for premium feel */
+            color: #343a40; /* Darker text for readability */
+        }
+        .invoice-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e0e0;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #003366; /* Deep blue for company name */
+            font-size: 32px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .company-description-box {
+            background-color: #e6f0fa; /* Light blue background */
+            border: 1px solid #cce0f5; /* Subtle border */
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 15px;
+            color: #004085; /* Darker blue text */
+            font-style: italic;
+        }
+        .company-contact-info, .invoice-details {
+            width: 48%; /* Roughly half width */
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        .company-contact-info {
+            text-align: left;
+        }
+        .invoice-details {
+            text-align: right;
+        }
+        .section-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap; /* Allows wrapping on smaller screens */
+        }
+        .info-block p, .info-block li {
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+            padding: 2px 0;
+        }
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 30px 0;
+            padding: 10px 15px;
+            color: #003366;
+            background-color: #f0f8ff; /* Very light blue */
+            border-bottom: 3px solid #003366;
+            border-top: 3px solid #003366;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .customer-details-box {
+            border: 1px solid #cce0f5; /* Light blue border */
+            background-color: #f8fbfe; /* Very light background */
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .customer-details-box table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .customer-details-box table td {
+            padding: 8px 10px;
+            text-align: left;
+            border: none; /* Remove inner borders */
+        }
+        .customer-details-box table td strong {
+            color: #004085;
+            display: inline-block;
+            min-width: 80px; /* Align labels */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-bottom: 30px;
+            border: 1px solid #e0e0e0; /* Overall table border */
+        }
+        th, td {
+            border: 1px solid #e0e0e0; /* Lighter borders */
+            padding: 12px 10px;
+            text-align: left; /* Align text to left in body cells */
+        }
+        th {
+            background-color: #f2f6fa; /* Light header background */
+            color: #003366; /* Dark blue header text */
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f9fbfd; /* Subtle zebra striping */
+        }
+        tfoot td {
+            background-color: #e6f0fa; /* Light blue footer for total */
+            font-weight: bold;
+            border-top: 2px solid #003366;
+        }
+        tfoot td:last-child {
+            text-align: right; /* Align total amount to right */
+            font-size: 16px;
+            color: #003366;
+        }
+        .total-in-words {
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f0f8ff;
+            border-radius: 5px;
+        }
+        
+        /* New container for terms and signature */
+        .terms-signature-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* Align items to the top */
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed #e0e0e0; /* Dashed line separator */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        .terms {
+            font-size: 13px;
+            line-height: 1.8;
+            width: 60%; /* Take 60% width */
+            box-sizing: border-box; /* Include padding/border in width */
+            padding-right: 20px; /* Space between terms and signature */
+        }
+        .terms ol {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+        .terms li {
+            margin-bottom: 5px;
+        }
+
+        .signature-block {
+            width: 35%; /* Take 35% width, leaving some gap */
+            text-align: right;
+            padding-left: 20px; /* Space between terms and signature */
+            box-sizing: border-box;
+        }
+        .signature-block p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        /* Added space for signature line */
+        .signatory-line {
+            margin-top: 60px; /* Increased margin-top for signature space */
+            border-top: 1px solid #a0a0a0;
+            width: 100%; /* Take full width of its container */
+            padding-top: 5px;
+            text-align: center;
+        }
+
+        .print-button-container {
+            text-align: center;
+            margin-top: 40px;
+            padding-bottom: 20px;
+        }
+        .print-button {
+            padding: 12px 25px;
+            font-size: 16px;
+            background-color: #007bff; /* Blue button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
+        }
+        .print-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Adjust table alignment for numeric values */
+        .items tbody td:nth-child(1), /* Sr. No. */
+        .items tbody td:nth-child(4), /* Qty */
+        .items tbody td:nth-child(5), /* Rate */
+        .items tbody td:nth-child(6) /* Amount */ {
+            text-align: center; /* Center Qty, Rate, Amount */
+        }
+        .items tbody td:nth-child(6) {
+             text-align: right; /* Align Amount to the right */
+        }
+        .items tfoot td:nth-child(5) {
+            text-align: right !important; /* Total Amount label alignment */
+        }
+        .items tfoot td:nth-child(6) {
+            text-align: right !important; /* Total Amount value alignment */
+        }
+
+        /* Media queries for responsiveness */
+        @media (max-width: 600px) {
+            .invoice-container {
+                padding: 20px;
+            }
+            .header h1 {
+                font-size: 24px;
+            }
+            .title {
+                font-size: 20px;
+            }
+            .section-row {
+                flex-direction: column;
+            }
+            .company-contact-info, .invoice-details {
+                width: 100%;
+                text-align: left;
+                margin-bottom: 10px;
+            }
+            .invoice-details {
+                text-align: left; /* Align right section to left on small screens */
+            }
+            th, td {
+                padding: 8px 6px;
+            }
+            .print-button {
+                width: 100%;
+                padding: 10px;
+            }
+            /* Terms and Signature for small screens */
+            .terms-signature-container {
+                flex-direction: column; /* Stack vertically */
+                align-items: stretch; /* Stretch to full width */
+            }
+            .terms, .signature-block {
+                width: 100%; /* Full width */
+                padding-right: 0;
+                padding-left: 0;
+                margin-bottom: 20px; /* Space between them when stacked */
+            }
+            .signature-block {
+                text-align: left; /* Align to left when stacked */
+            }
+            .signatory-line {
+                margin-left: 0; /* Align line to left */
+            }
+        }
+
+        /* PRINT-SPECIFIC STYLES - Further optimized for single page */
+        @media print {
+            /* Define paper size and margins */
+            @page {
+                size: A4;
+                margin: 0.8cm; /* Reduced margin from 1cm to 0.8cm */
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: #fff;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                font-size: 9.5pt; /* Slightly smaller base font */
+            }
+            .invoice-container {
+                box-shadow: none;
+                border: none;
+                border-radius: 0;
+                padding: 0; /* No padding on container for print */
+                width: 100%;
+                max-width: none;
+            }
+            .print-button-container {
+                display: none;
+            }
+
+            /* Reduce margins and paddings for all key blocks */
+            .header {
+                margin-bottom: 15px; /* Reduced */
+            }
+            .header h1 {
+                font-size: 22pt; /* Slightly smaller heading */
+            }
+            .company-description-box {
+                padding: 10px 15px; /* Reduced */
+                margin: 15px 0; /* Reduced */
+                font-size: 9pt; /* Smaller font */
+            }
+            .company-contact-info, .invoice-details {
+                padding: 10px; /* Reduced */
+            }
+            .info-block p, .info-block li {
+                font-size: 9pt; /* Smaller font for details */
+                line-height: 1.4; /* Tighter line height */
+                padding: 1px 0; /* Reduced */
+            }
+            .title {
+                margin: 20px 0; /* Reduced */
+                padding: 8px 10px; /* Reduced */
+                font-size: 16pt; /* Smaller title font */
+            }
+            .customer-details-box {
+                padding: 15px; /* Reduced */
+                margin-bottom: 20px; /* Reduced */
+            }
+            .customer-details-box table td {
+                padding: 6px 8px; /* Reduced table cell padding in customer details */
+            }
+
+            table { /* Main items table */
+                margin-bottom: 20px; /* Reduced */
+            }
+            th, td {
+                padding: 6px 8px; /* Reduced table cell padding */
+                font-size: 9pt; /* Smaller font for table content */
+            }
+            th {
+                font-size: 8.5pt; /* Slightly smaller header font */
+            }
+            tfoot td {
+                padding: 8px 8px; /* Reduced footer padding */
+                font-size: 10pt; /* Adjusted total font size */
+            }
+
+            .total-in-words {
+                margin-bottom: 15px; /* Reduced */
+                padding: 8px; /* Reduced */
+                font-size: 9.5pt; /* Adjusted font size */
+            }
+            
+            /* Print specific for terms and signature container */
+            .terms-signature-container {
+                margin-top: 20px; /* Reduced */
+                padding-top: 15px; /* Reduced */
+            }
+            .terms {
+                font-size: 8.5pt; /* Smaller font for terms */
+                line-height: 1.5; /* Tighter line height */
+                padding-right: 15px; /* Reduced */
+            }
+            .terms ol {
+                padding-left: 15px; /* Reduced */
+                margin-top: 8px; /* Reduced */
+            }
+            .terms li {
+                margin-bottom: 3px; /* Reduced */
+            }
+
+            .signature-block {
+                padding-left: 15px; /* Reduced */
+            }
+            .signature-block p {
+                font-size: 9pt; /* Smaller font for signature text */
+            }
+            /* Adjusted margin-top for signature line in print */
+            .signatory-line {
+                margin-top: 40px; /* Sufficient space for signature in print */
+                width: 100%; /* Ensure it spans its container */
+                padding-top: 3px; /* Reduced */
+            }
+            
+            /* Ensure content blocks do not break */
+            .header,
+            .company-description-box,
+            .section-row,
+            .title,
+            .customer-details-box,
+            .items, /* Keeping table together is harder if it has many rows */
+            .total-in-words,
+            .terms-signature-container /* Prevent this entire section from breaking */
+             {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .items tbody tr { /* This helps, but a very long table will always break */
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="invoice-container">
+    <div class="header">
+        <h1>{{ company_name }}</h1>
+    </div>
+
+    <div class="company-description-box">
+        <p><strong>Description:</strong> {{ company_description }}</p>
+    </div>
+
+    <div class="section-row">
+        <div class="company-contact-info">
+            <h3>From:</h3>
+            <div class="info-block">
+                <p><strong>Address:</strong> {{ company_address }}</p>
+                <p><strong>Email:</strong> {{ company_email }}</p>
+                <p><strong>Phone:</strong> {{ company_phone }}</p>
+                <p><strong>GSTIN:</strong> {{ company_gstin }}</p>
+            </div>
+        </div>
+        <div class="invoice-details">
+            <div class="info-block">
+                <p><strong>Challan No:</strong> {{ invoice_number or 'N/A' }}</p>
+                <p><strong>Challan Date:</strong> {{ invoice_date or 'N/A' }}</p>
+                <p><strong>Transport:</strong> (Optional)</p>
+                <p><strong>Vehicle No:</strong> (Optional)</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="title">DELIVERY CHALLAN</div>
+
+    <div class="customer-details-box">
+        <h3>To:</h3>
+        <table>
+            <tr>
+                <td><strong>M/S:</strong></td>
+                <td>{{ customer or 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td><strong>Address:</strong></td>
+                <td>(To be filled if available)</td>
+            </tr>
+            <tr>
+                <td><strong>Phone:</strong></td>
+                <td>(Optional)</td>
+            </tr>
+            <tr>
+                <td><strong>GSTIN:</strong></td>
+                <td>{{ gst_number or 'N/A' }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="items">
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr. No.</th>
+                    <th>Name of Product / Service</th>
+                    <th>HSN / SAC</th>
+                    <th>Qty</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if items %}
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.hsn }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>₹{{ "%.2f"|format(item.rate|float) }}</td>
+                        <td>₹{{ "%.2f"|format(item.total|float) }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: #6c757d;">No items added.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" style="text-align: right;"><strong>Total Amount</strong></td>
+                    <td style="text-align: right;"><strong>₹{{ "%.2f"|format(total_amount|float) or '0.00' }}</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="section total-in-words">
+        <p><strong>Total in Words:</strong> {{ total_in_words or 'ZERO RUPEES ONLY' }}</p>
+    </div>
+
+    <div class="terms-signature-container">
+        <div class="terms">
+            <p><strong>Terms & Conditions:</strong></p>
+            <ol>
+                <li>Subject to local jurisdiction.</li>
+                <li>Our responsibility ceases as goods leave premises.</li>
+                <li>No returns after delivery.</li>
+                <li>Delivery is ex-premises.</li>
+            </ol>
+        </div>
+
+        <div class="signature-block">
+            <p>For {{ company_name }}</p>
+            <div class="signatory-line">
+                <p>(Authorized Signatory)</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="print-button-container">
+    <button onclick="window.print()" class="print-button">Download / Print Challan</button>
+</div>
+
+</body>
+</html>

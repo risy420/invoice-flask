@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Workshop Invoice System - Precision. Trust. Innovation.</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --- Root Variables for Theming (Rich, Confident, Trustworthy) --- */
+        :root {
+            --primary-navy: #0A192F;     /* Deep, rich navy for professionalism & trust */
+            --secondary-blue: #1C2E4A;  /* Mid-tone blue-grey for depth */
+            --accent-gold: #DAA520;     /* Regal, established gold for richness & confidence */
+            --light-text: #E0E6ED;      /* Soft white-grey for dark backgrounds */
+            --dark-text: #34495E;       /* Dark blue-grey for light backgrounds */
+            --body-bg: #F5F8FA;         /* Very light, cool-grey tint for clean appearance */
+            --card-bg: #FFFFFF;         /* Pure white for crisp content areas */
+            --footer-bg: #06101E;       /* Even darker navy for a strong footer */
+        }
+
+        /* --- Global Styles --- */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--body-bg);
+            color: var(--dark-text);
+            padding-top: 80px;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary-navy);
+            font-weight: 800; /* Even bolder for impact */
+            margin-bottom: 1.2rem;
+            letter-spacing: -0.8px; /* Tighter for modern headings */
+        }
+
+        p {
+            margin-bottom: 1rem;
+            font-size: 1.08rem; /* Slightly larger body text for better readability */
+            color: var(--dark-text); /* Ensure consistent color */
+        }
+
+        a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        a:hover {
+            color: var(--primary-navy); /* Deeper hover for links */
+            text-decoration: underline; /* Clearer link interaction */
+            transform: translateY(-2px);
+        }
+
+        section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 80px;
+            position: relative;
+            padding-bottom: 20px;
+        }
+        .section-title h2 {
+            font-size: 3.5rem; /* Larger, more commanding titles */
+            font-weight: 900; /* Ultra bold */
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            position: relative;
+            display: inline-block;
+            color: var(--primary-navy);
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* Subtle depth */
+        }
+        .section-title h2::after {
+            content: '';
+            display: block;
+            width: 120px; /* Wider underline */
+            height: 6px; /* Thicker underline */
+            background: var(--accent-gold);
+            margin: 20px auto 0;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(218, 165, 32, 0.6); /* More prominent glow */
+        }
+
+        /* --- Navbar --- */
+        .navbar {
+            background-color: var(--primary-navy) !important;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3); /* Stronger, confident shadow */
+            transition: all 0.4s ease-in-out;
+            padding: 1rem 0;
+        }
+        .navbar-brand {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900; /* Ultra bold for brand */
+            color: var(--accent-gold) !important;
+            font-size: 2.2rem; /* Larger, more authoritative brand name */
+            letter-spacing: 2.5px;
+            text-shadow: 1px 1px 5px rgba(218, 165, 32, 0.6); /* Confident glow */
+        }
+        .navbar-nav .nav-link {
+            color: var(--light-text) !important;
+            font-weight: 500;
+            transition: color 0.3s ease, transform 0.3s ease;
+            margin-left: 30px; /* More spacing for openness */
+            font-size: 1.15rem; /* Slightly larger nav text */
+            position: relative;
+            padding-bottom: 5px;
+        }
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 3px; /* Thicker underline */
+            background-color: var(--accent-gold);
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s ease-out;
+        }
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
+        .navbar-nav .nav-link:hover {
+            color: var(--accent-gold) !important;
+            transform: translateY(-5px); /* More dynamic lift */
+        }
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28218, 165, 32, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        /* --- Hero Section (Innovative, Unique, Awesome) --- */
+        .hero-section {
+            background: linear-gradient(rgba(10,25,47,0.85), rgba(10,25,47,0.85)), url('https://source.unsplash.com/1920x1080/?modern-workshop,industrial-design,innovation') no-repeat center center/cover;
+            color: var(--light-text);
+            text-align: center;
+            padding: 160px 0; /* More vertical space for grandeur */
+            min-height: 750px; /* Taller hero */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-section::before { /* Subtle radial gradient for depth */
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at top left, rgba(218,165,32,0.1) 0%, transparent 50%),
+                        radial-gradient(circle at bottom right, rgba(218,165,32,0.1) 0%, transparent 50%);
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1100px; /* Wider content for more impact */
+            margin: auto;
+            animation: fadeInScale 1.5s ease-out forwards; /* Slower, more elegant intro */
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9) translateY(40px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .hero-content h1 {
+            font-size: 5.2rem; /* Massive, commanding headline */
+            font-weight: 900;
+            margin-bottom: 35px;
+            color: var(--light-text);
+            text-shadow: 0 8px 20px rgba(0,0,0,0.8); /* Stronger shadow */
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+        }
+        .hero-content p {
+            font-size: 1.8rem; /* Larger, confident subtitle */
+            margin-bottom: 60px;
+            line-height: 1.4;
+            color: rgba(224, 230, 237, 0.98);
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero-content .btn-primary {
+            background-color: var(--accent-gold);
+            border-color: var(--accent-gold);
+            color: var(--primary-navy);
+            font-weight: 700;
+            padding: 20px 60px; /* Even larger, more inviting button */
+            font-size: 1.45rem;
+            border-radius: 50px;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 25px rgba(218, 165, 32, 0.6); /* More prominent glow */
+        }
+        .hero-content .btn-primary:hover {
+            background-color: var(--primary-navy);
+            border-color: var(--primary-navy);
+            color: var(--accent-gold);
+            transform: translateY(-10px) scale(1.03); /* More impactful hover */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(218, 165, 32, 0.8); /* Stronger glow */
+        }
+
+        /* --- Dashboard Cards (Core Content - Designer Touch) --- */
+        .dashboard-cards .card {
+            background-color: var(--card-bg);
+            border: none;
+            border-radius: 18px; /* More pronounced rounding */
+            padding: 45px; /* More inner space */
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother, more elegant curve */
+            box-shadow: 0 12px 35px rgba(0,0,0,0.1); /* Deeper, more sophisticated shadow */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05); /* Subtle border for definition */
+        }
+        .dashboard-cards .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, transparent 60%, rgba(218,165,32,0.08) 100%); /* Subtle gradient background */
+            transition: all 0.5s ease-out;
+            z-index: 0;
+        }
+        .dashboard-cards .card:hover::before {
+            background: linear-gradient(135deg, transparent 10%, rgba(218,165,32,0.18) 100%); /* More prominent gradient on hover */
+            opacity: 1;
+        }
+        .dashboard-cards .card:hover {
+            box-shadow: 0 25px 60px rgba(0,0,0,0.25); /* Much stronger, rich shadow */
+            transform: translateY(-20px) scale(1.03); /* More dynamic lift and slight scale */
+            border-color: var(--accent-gold); /* Prominent gold border on hover */
+        }
+        .dashboard-cards .card i {
+            font-size: 5rem; /* Even larger icons for impact */
+            color: var(--accent-gold);
+            margin-bottom: 35px;
+            transition: transform 0.4s ease, color 0.4s ease;
+            text-shadow: 0 0 20px rgba(218, 165, 32, 0.7); /* Stronger icon glow */
+        }
+        .dashboard-cards .card:hover i {
+            transform: scale(1.2) rotate(8deg); /* More dynamic icon effect */
+            color: var(--primary-navy); /* Icon color shift */
+        }
+        .dashboard-cards .card h4 {
+            font-size: 2.2rem; /* Larger titles */
+            margin-bottom: 18px;
+            color: var(--primary-navy);
+            transition: color 0.4s ease;
+            font-weight: 800;
+        }
+        .dashboard-cards .card:hover h4 {
+            color: var(--accent-gold); /* Title color shift */
+        }
+        .dashboard-cards .card p {
+            font-size: 1.15rem;
+            opacity: 0.9;
+        }
+
+        /* --- About Section (Trustworthy, Professional Team Builder) --- */
+        .about-section {
+            background: linear-gradient(to right, var(--secondary-blue), #2C4A6B); /* Deeper, more confident gradient */
+            color: var(--light-text);
+            padding-bottom: 120px;
+        }
+        .about-section h3 {
+            color: var(--accent-gold);
+            font-weight: 700;
+            margin-bottom: 30px;
+            font-size: 2.5rem; /* Larger section heading */
+            letter-spacing: -0.5px;
+        }
+        .about-section p {
+            font-size: 1.2rem; /* Larger body text */
+            opacity: 0.95;
+            line-height: 1.8;
+        }
+        .about-section .img-fluid {
+            border-radius: 18px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4); /* Deeper image shadow */
+            transform: rotate(-5deg); /* More dramatic initial rotation */
+            transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
+        }
+        .about-section .img-fluid:hover {
+            transform: rotate(0deg) scale(1.03); /* Straighten and slight scale on hover */
+        }
+        .about-section .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 35px;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+            background: rgba(0,0,0,0.1); /* Subtle background for features */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .about-section .feature-item:hover {
+            transform: translateX(15px); /* More pronounced slide effect */
+            background: rgba(0,0,0,0.2);
+        }
+        .about-section .feature-item i {
+            font-size: 3.2rem; /* Larger feature icons */
+            color: var(--accent-gold);
+            margin-right: 30px;
+            flex-shrink: 0;
+            text-shadow: 0 0 15px rgba(218, 165, 32, 0.7); /* Stronger icon glow */
+        }
+        .about-section .feature-item div h4 {
+            color: var(--light-text);
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .about-section .feature-item div p {
+            font-size: 1.05rem;
+            color: rgba(224, 230, 237, 0.85);
+            margin-bottom: 0;
+        }
+
+        /* --- Features & FAQ Sections (Relevant, Efficient) --- */
+        .accordion-item {
+            border: 1px solid rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            border-radius: 15px; /* More rounded */
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1); /* Deeper shadow */
+            transition: all 0.3s ease;
+        }
+        .accordion-item:hover {
+            box-shadow: 0 15px 40px rgba(0,0,0,0.18); /* Lift on hover */
+        }
+        .accordion-button {
+            background-color: var(--card-bg);
+            color: var(--primary-navy);
+            font-weight: 600;
+            font-size: 1.25rem; /* Larger accordion button text */
+            padding: 25px 35px;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(0,0,0,0.08); /* More defined border */
+        }
+        .accordion-button i {
+            color: var(--secondary-blue); /* Icon color */
+            transition: transform 0.3s ease;
+        }
+        .accordion-button:not(.collapsed) {
+            background-color: var(--accent-gold);
+            color: var(--primary-navy);
+            box-shadow: inset 0 -4px 0 rgba(218, 165, 32, 0.4); /* Stronger highlight */
+            border-radius: 15px 15px 0 0;
+        }
+        .accordion-button:not(.collapsed) i {
+            transform: rotate(90deg); /* Rotate icon when open */
+            color: var(--primary-navy); /* Icon color when open */
+        }
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: var(--accent-gold);
+        }
+        .accordion-body {
+            background-color: var(--body-bg);
+            padding: 35px;
+            font-size: 1.1rem;
+            color: var(--dark-text);
+        }
+
+        /* --- Contact Section --- */
+        .contact-section {
+            background: linear-gradient(to left, var(--secondary-blue), #2C4A6B); /* Consistent gradient */
+            color: var(--light-text);
+            padding-top: 120px;
+            padding-bottom: 120px;
+        }
+        .contact-info {
+            background: var(--primary-navy); /* Deep navy background */
+            border-radius: 18px;
+            padding: 60px; /* More generous padding */
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4); /* Deeper shadow */
+            position: relative;
+            overflow: hidden;
+        }
+        .contact-info::before {
+            content: '';
+            position: absolute;
+            top: -20%; left: -20%;
+            width: 140%; height: 140%;
+            background: radial-gradient(circle at top left, rgba(218,165,32,0.2) 0%, transparent 50%); /* More prominent radial gradient */
+            z-index: 0;
+        }
+        .contact-info * { position: relative; z-index: 1; }
+        .contact-info h3 {
+            color: var(--accent-gold);
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(218, 165, 32, 0.8);
+        }
+        .contact-info .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+        .contact-info .info-item i {
+            font-size: 2.5rem; /* Larger icons */
+            color: var(--accent-gold);
+            margin-right: 30px;
+            flex-shrink: 0;
+            text-shadow: 0 0 10px rgba(218, 165, 32, 0.6);
+        }
+        .contact-info .info-item p {
+            margin-bottom: 0;
+            font-size: 1.2rem;
+            color: var(--light-text);
+            opacity: 0.98;
+        }
+        .contact-info .info-item a {
+             color: var(--light-text);
+             text-decoration: underline; /* Emphasize contact links */
+        }
+        .contact-info .info-item a:hover {
+            color: var(--accent-gold);
+            text-decoration: none;
+        }
+        .contact-form {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 60px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        .contact-form h3 {
+            color: var(--primary-navy);
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .contact-form .form-control {
+            border-radius: 12px;
+            padding: 20px; /* More padding */
+            background-color: var(--body-bg);
+            border: 1px solid rgba(0,0,0,0.15);
+            color: var(--dark-text);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .contact-form .form-control::placeholder {
+            color: rgba(0,0,0,0.6);
+        }
+        .contact-form .form-control:focus {
+            background-color: var(--card-bg);
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 0.3rem rgba(218, 165, 32, 0.25);
+            color: var(--dark-text);
+        }
+        .contact-form .btn-submit {
+            background-color: var(--accent-gold);
+            border-color: var(--accent-gold);
+            color: var(--primary-navy);
+            font-weight: 700;
+            padding: 18px 50px;
+            font-size: 1.3rem;
+            border-radius: 50px;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 10px 25px rgba(218, 165, 32, 0.6);
+        }
+        .contact-form .btn-submit:hover {
+            background-color: var(--primary-navy);
+            border-color: var(--primary-navy);
+            color: var(--accent-gold);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 30px rgba(218, 165, 32, 0.8);
+        }
+
+        /* --- Footer (Awesome, Grounded) --- */
+        .footer {
+            background-color: var(--footer-bg);
+            color: rgba(224, 230, 237, 0.8);
+            padding: 80px 0 50px; /* More padding for a grander footer */
+            font-size: 1rem;
+        }
+        .footer h5 {
+            color: var(--light-text);
+            font-weight: 700;
+            margin-bottom: 35px;
+            font-size: 1.6rem; /* Larger footer headings */
+            letter-spacing: 0.5px;
+        }
+        .footer ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer ul li {
+            margin-bottom: 15px; /* More spacing */
+        }
+        .footer ul li a {
+            color: rgba(224, 230, 237, 0.8);
+            transition: color 0.3s ease, transform 0.3s ease;
+            font-size: 1.05rem;
+            display: inline-block; /* Allows transform */
+        }
+        .footer ul li a:hover {
+            color: var(--accent-gold);
+            transform: translateX(8px); /* More pronounced slide effect */
+        }
+        .footer .social-icons a {
+            color: rgba(224, 230, 237, 0.9);
+            font-size: 2rem; /* Larger social icons */
+            margin-right: 25px;
+            transition: color 0.3s ease, transform 0.3s ease;
+            text-shadow: 0 0 8px rgba(0,0,0,0.4);
+        }
+        .footer .social-icons a:hover {
+            color: var(--accent-gold);
+            transform: translateY(-8px) scale(1.15); /* More dynamic social hover */
+            text-shadow: 0 0 25px rgba(218, 165, 32, 0.9);
+        }
+        .footer .footer-bottom {
+            border-top: 1px solid rgba(224, 230, 237, 0.15);
+            padding-top: 35px;
+            margin-top: 60px;
+            text-align: center;
+            font-size: 0.95rem;
+            color: rgba(224, 230, 237, 0.7);
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 1199.98px) {
+            .hero-content h1 { font-size: 4.5rem; }
+            .hero-content p { font-size: 1.6rem; }
+            .section-title h2 { font-size: 3rem; }
+            .dashboard-cards .card i { font-size: 4.5rem; }
+        }
+
+        @media (max-width: 991.98px) {
+            body { padding-top: 70px; }
+            .navbar { padding: 0.8rem 0; }
+            .navbar-brand { font-size: 1.8rem; }
+            .navbar-nav .nav-link { margin-left: 10px; font-size: 1rem; }
+            .navbar-nav { text-align: center; margin-top: 15px; }
+            .hero-section { padding: 100px 0; min-height: 550px; }
+            .hero-content h1 { font-size: 3.5rem; }
+            .hero-content p { font-size: 1.3rem; }
+            .hero-content .btn-primary { padding: 14px 35px; font-size: 1.1rem; }
+            .section-title h2 { font-size: 2.8rem; margin-bottom: 60px;}
+            section { padding: 80px 0; }
+            .dashboard-cards .card, .contact-info, .contact-form { margin-bottom: 40px; }
+            .about-section .img-fluid { transform: rotate(0deg); margin-bottom: 40px; }
+            .contact-info, .contact-form { padding: 40px; }
+        }
+
+        @media (max-width: 767.98px) {
+            .hero-section { min-height: 450px; padding: 80px 0; }
+            .hero-content h1 { font-size: 2.8rem; margin-bottom: 20px; }
+            .hero-content p { font-size: 1.1rem; margin-bottom: 30px; }
+            .hero-content .btn-primary { padding: 12px 25px; font-size: 1rem; }
+            .section-title h2 { font-size: 2.2rem; margin-bottom: 40px;}
+            .dashboard-cards .card i { font-size: 3.8rem; margin-bottom: 20px; }
+            .dashboard-cards .card h4 { font-size: 1.8rem; }
+            .about-section .feature-item { flex-direction: column; text-align: center; align-items: center; }
+            .about-section .feature-item i { margin-right: 0; margin-bottom: 15px; }
+            .contact-info h3, .contact-form h3 { font-size: 2rem; }
+            .footer { text-align: center; padding: 50px 0 25px; }
+            .footer ul { margin-bottom: 25px; }
+            .footer .social-icons { margin-top: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{ url_for('index') }}">WorkshopSys</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                {% if g.user %}
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('add_challan') }}">Add Challan</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('company_view') }}">View Company</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('generate_invoice') }}">Generate Invoice</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('profile') }}">Profile ({{ g.user['Company Name'] }})</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Register</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{% if g.user %}
+<section class="hero-section hero-loggedin">
+    <div class="hero-content">
+        <h1>Welcome Back, {{ g.user['Company Name'] }}!</h1>
+        <p>Your workshop operations are running smoothly. Let's make today even more productive.</p>
+        <a href="{{ url_for('add_challan') }}" class="btn btn-primary btn-lg">Start New Challan</a>
+        <a href="{{ url_for('generate_invoice') }}" class="btn btn-primary btn-lg ms-3">Generate Invoice</a>
+    </div>
+</section>
+
+<section class="dashboard-cards container">
+    <div class="section-title">
+        <h2>Your Command Center</h2>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-4 mb-4">
+            <div class="card" onclick="location.href='{{ url_for('add_challan') }}'">
+                <i class="fas fa-file-invoice"></i>
+                <h4>Add Challan</h4>
+                <p>Swiftly upload and record new material receipts and dispatches.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card" onclick="location.href='{{ url_for('company_view') }}'">
+                <i class="fas fa-industry"></i>
+                <h4>Company View</h4>
+                <p>Access and manage all products and challans categorized by company.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card" onclick="location.href='{{ url_for('generate_invoice') }}'">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <h4>Generate Invoice</h4>
+                <p>Effortlessly create professional, detailed invoices with accurate rates.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% else %}
+<section class="hero-section hero-loggedout">
+    <div class="hero-content">
+        <h1>Ignite Your Workshop's Potential with WorkshopSys</h1>
+        <p>Go beyond traditional management. Seamlessly track materials, automate invoicing, and gain crystal-clear insights to propel your business forward.</p>
+        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Start Your Free Journey Today</a>
+    </div>
+</section>
+
+<section id="about" class="about-section">
+    <div class="container">
+        <div class="section-title">
+            <h2 style="color: var(--light-text);">Why Choose WorkshopSys?</h2>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <img src="https://source.unsplash.com/600x400/?workshop,efficiency,management" class="img-fluid rounded shadow-lg" alt="Workshop Efficiency">
+            </div>
+            <div class="col-lg-6">
+                <h3 class="text-start mb-4" style="color: var(--accent-gold);">Revolutionize Your Workflow</h3>
+                <p>WorkshopSys isn't just software; it's your strategic partner in optimizing workshop operations. Designed for precision and speed, we empower you to focus on what you do best: delivering exceptional service.</p>
+                <div class="feature-item">
+                    <i class="fas fa-cogs"></i>
+                    <div>
+                        <h4>Automated Precision</h4>
+                        <p>Reduce manual errors and speed up data entry with smart automation.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-eye"></i>
+                    <div>
+                        <h4>Crystal-Clear Visibility</h4>
+                        <p>Gain real-time insights into your inventory, challans, and financial performance.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-handshake"></i>
+                    <div>
+                        <h4>Seamless Integration</h4>
+                        <p>Connect your entire process, from material intake to final billing, effortlessly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="features" class="faq-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Core Features</h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="featuresAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="featureHeadingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#featureCollapseOne" aria-expanded="true" aria-controls="featureCollapseOne">
+                                <i class="fas fa-upload me-3"></i> Digital Challan Management
+                            </button>
+                        </h2>
+                        <div id="featureCollapseOne" class="accordion-collapse collapse show" aria-labelledby="featureHeadingOne" data-bs-parent="#featuresAccordion">
+                            <div class="accordion-body">
+                                Digitize all your material challans. Easily upload, categorize, and retrieve documents, reducing paper clutter and improving record-keeping accuracy. Track every item's journey from arrival to consumption.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="featureHeadingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#featureCollapseTwo" aria-expanded="false" aria-controls="featureCollapseTwo">
+                                <i class="fas fa-building me-3"></i> Comprehensive Company-wise Tracking
+                            </button>
+                        </h2>
+                        <div id="featureCollapseTwo" class="accordion-collapse collapse" aria-labelledby="featureHeadingTwo" data-bs-parent="#featuresAccordion">
+                            <div class="accordion-body">
+                                Organize your inventory and services based on client companies. Get a unified view of all products and services provided to each company, simplifying reporting and billing cycles.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="featureHeadingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#featureCollapseThree" aria-expanded="false" aria-controls="featureCollapseThree">
+                                <i class="fas fa-file-invoice-dollar me-3"></i> Smart Invoice Generation
+                            </button>
+                        </h2>
+                        <div id="featureCollapseThree" class="accordion-collapse collapse" aria-labelledby="featureHeadingThree" data-bs-parent="#featuresAccordion">
+                            <div class="accordion-body">
+                                Transform challan data into professional invoices instantly. Our system handles calculations, applies predefined rates, and ensures compliance, reducing billing time and financial discrepancies.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="featureHeadingFour">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#featureCollapseFour" aria-expanded="false" aria-controls="featureCollapseFour">
+                                <i class="fas fa-chart-line me-3"></i> Performance Analytics
+                            </button>
+                        </h2>
+                        <div id="featureCollapseFour" class="accordion-collapse collapse" aria-labelledby="featureHeadingFour" data-bs-parent="#featuresAccordion">
+                            <div class="accordion-body">
+                                Access dashboards and reports that provide actionable insights into your workshop's material consumption, project costs, and overall profitability, helping you make informed decisions.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="faq" class="about-section">
+    <div class="container">
+        <div class="section-title">
+            <h2 style="color: var(--light-text);">Common Questions</h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqHeadingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseOne" aria-expanded="true" aria-controls="faqCollapseOne">
+                                <i class="fas fa-question-circle me-3"></i> How quickly can I get started with WorkshopSys?
+                            </button>
+                        </h2>
+                        <div id="faqCollapseOne" class="accordion-collapse collapse show" aria-labelledby="faqHeadingOne" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Getting started is incredibly fast! After a quick registration, you can begin adding your company details and uploading challans within minutes. Our intuitive interface is designed for immediate productivity.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqHeadingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseTwo" aria-expanded="false" aria-controls="faqCollapseTwo">
+                                <i class="fas fa-question-circle me-3"></i> Is there a mobile app for WorkshopSys?
+                            </button>
+                        </h2>
+                        <div id="faqCollapseTwo" class="accordion-collapse collapse" aria-labelledby="faqHeadingTwo" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Currently, WorkshopSys is a web-based application optimized for all devices, including mobile. This means you can access your dashboard and manage operations seamlessly from any smartphone or tablet browser without needing a separate app download.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqHeadingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseThree" aria-expanded="false" aria-controls="faqCollapseThree">
+                                <i class="fas fa-question-circle me-3"></i> What kind of support does WorkshopSys offer?
+                            </button>
+                        </h2>
+                        <div id="faqCollapseThree" class="accordion-collapse collapse" aria-labelledby="faqHeadingThree" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                We offer comprehensive support to ensure your success. Our support channels include email, a detailed knowledge base with tutorials, and a dedicated support team ready to assist you during business hours (Mon-Sat, 9:00 AM - 6:00 PM IST).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section id="contact" class="contact-section">
+    <div class="container">
+        <div class="section-title">
+            <h2 style="color: var(--light-text);">Connect With Us</h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="contact-info">
+                            <h3>Reach Out Directly</h3>
+                            <div class="info-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <p>123 Innovation Drive,<br> Nashik, Maharashtra, India<br> Pin Code: 422001</p>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-envelope"></i>
+                                <p><a href="mailto:support@workshopsys.com">support@workshopsys.com</a></p>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-phone"></i>
+                                <p><a href="tel:+919876543210">+91 98765 43210</a></p>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                <p>Mon - Sat: 9:00 AM - 6:00 PM IST</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="contact-form">
+                            <h3>Send Us a Message</h3>
+                            <form>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" placeholder="Your Name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="email" class="form-control" placeholder="Your Email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" placeholder="Subject">
+                                </div>
+                                <div class="mb-3">
+                                    <textarea class="form-control" rows="6" placeholder="Your Message" required></textarea>
+                                </div>
+                                <div class="text-center text-md-start">
+                                    <button type="submit" class="btn btn-submit">Send Message</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-5 mb-md-0">
+                <h5>WorkshopSys</h5>
+                <p>Empowering workshops with cutting-edge material and invoice management solutions for unparalleled efficiency.</p>
+                <div class="social-icons mt-4">
+                    <a href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-md-4 mb-5 mb-md-0">
+                <h5>Quick Navigation</h5>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Find Us Here</h5>
+                <p>123 Innovation Drive,<br> Nashik, Maharashtra, India<br> Pin Code: 422001</p>
+                <p class="mt-3">Email: <a href="mailto:info@workshopsys.com">info@workshopsys.com</a></p>
+                <p>Phone: <a href="tel:+919876543210">+91 98765 43210</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; <span id="current-year"></span> WorkshopSys. All rights reserved. Crafted with precision in Nashik.
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+</body>
+</html>

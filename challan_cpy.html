@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Challan - Jag Janani Engineering</title>
+    <style>
+        /* General Reset/Base */
+        body {
+            font-family: 'Times New Roman', Times, serif; /* Often used in print documents, or a sans-serif like Arial */
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top */
+            min-height: 100vh; /* Ensure it takes full viewport height for centering */
+        }
+
+        .challan-container {
+            width: 794px; /* Aprox 21cm @ 96dpi, adjusting based on visual width */
+            padding: 20px 30px; /* Adjust padding to match borders from edges */
+            border: 1px solid #000;
+            background-color: #FFF8E1; /* A light, slightly desaturated yellow for the paper */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+            margin: 20px 0; /* Add margin top/bottom to body for visual spacing */
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            line-height: 1.2;
+            margin-bottom: 15px; /* Space before first HR */
+        }
+        .header .delivery-challan-text {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px; /* Space below "DELIVERY CHALLAN" */
+        }
+        .company-logo-section {
+            display: flex;
+            align-items: flex-end; /* Align "JE" and text base */
+            justify-content: center;
+            margin-bottom: 5px; /* Space below company name */
+        }
+        .company-logo-section .je-initials {
+            font-size: 48px;
+            font-weight: bold;
+            line-height: 1; /* Tighter line height for the large "JE" */
+            margin-right: 5px;
+        }
+        .company-logo-section .company-name {
+            font-family: Arial, sans-serif; /* Keep Arial for company name as it's common */
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 1; /* Tighter line height */
+            letter-spacing: 0.5px; /* Small adjustment for letter spacing */
+            margin-top: 10px; /* Adjust vertical alignment if needed */
+        }
+        .tagline {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 5px;
+            padding-bottom: 5px; /* For padding before the hr */
+            border-bottom: 1px solid #000; /* Replaces HR for tagline line */
+        }
+        .gstin {
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 8px; /* Space after tagline HR */
+        }
+        .address-contact {
+            font-size: 12px;
+            line-height: 1.4; /* Adjust line height for address block */
+            margin-top: 10px;
+            padding-bottom: 10px; /* Padding before the next HR */
+            border-bottom: 1px solid #000; /* Replaces HR for address line */
+        }
+        .address-contact span {
+            display: block; /* Ensure each line breaks */
+        }
+
+        /* Details Rows */
+        .details-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline; /* Align text baselines */
+            margin-top: 12px; /* Consistent spacing between detail rows */
+            font-size: 14px;
+        }
+        .details-item {
+            flex: 1;
+            display: flex;
+            align-items: baseline;
+        }
+        .details-item.right {
+            justify-content: flex-end; /* Align right items to the right */
+        }
+        .details-label {
+            white-space: nowrap; /* Prevent label from wrapping */
+        }
+        .details-input {
+            border: none;
+            border-bottom: 1px dotted #000; /* Dotted line for handwritten input */
+            padding: 2px 5px;
+            font-size: 14px;
+            background-color: transparent;
+            flex-grow: 1; /* Allow input to take remaining space */
+            margin-left: 5px; /* Space between label and input */
+            min-width: 100px; /* Ensure input has a minimum width */
+        }
+        .details-input.small-width {
+            width: 120px; /* Specific width for D. Ch. No. and Date */
+            flex-grow: 0; /* Don't let it grow */
+            text-align: left;
+        }
+        .details-input.full-width {
+            width: 100%;
+            flex-grow: 1;
+        }
+        /* Overriding specific input widths for the M/s line */
+        .details-row:nth-of-type(1) .details-item:first-child .details-input {
+            width: 250px; /* Adjust width for 'J.A. Industries' */
+            flex-grow: 0;
+        }
+        .details-row:nth-of-type(2) .details-item:first-child .details-input {
+             width: 250px; /* Adjust width for 'H No. Sadguri Housing' */
+             flex-grow: 0;
+        }
+
+
+        /* Table Section */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px; /* Space after details rows */
+            font-size: 13px; /* Slightly smaller font for table content */
+        }
+        table, th, td {
+            border: 1px solid #000;
+        }
+        th, td {
+            padding: 6px 8px; /* Adjust padding for cell content */
+            text-align: left;
+            vertical-align: top; /* Align content to top of cells */
+        }
+        th {
+            background-color: #e9e9e9; /* Light grey background for headers */
+            font-weight: bold;
+        }
+        .table-sr {
+            width: 40px; /* Specific width for Sr. No. */
+            text-align: center;
+        }
+        .table-description {
+            width: 45%; /* Proportionally adjust description column */
+        }
+        .table-qty {
+            width: 15%; /* Quantity column */
+            text-align: center; /* Center align quantity */
+        }
+        .table-remark {
+            width: 20%; /* Remark column */
+        }
+        .description-content {
+            height: 90px; /* Fixed height for description cells to mimic spacing */
+            line-height: 1.4; /* Adjust line height within description */
+        }
+        .table-remark-content {
+            line-height: 1.4;
+        }
+        /* Ensure empty rows have height */
+        table tbody tr:nth-child(n+3) td {
+            height: 25px; /* Height for empty rows */
+            padding-top: 2px; /* Small padding */
+            padding-bottom: 2px;
+        }
+
+        /* Footer Section */
+        .footer {
+            margin-top: 40px; /* Space after table */
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end; /* Align signatures at the bottom */
+            font-size: 14px;
+        }
+        .receiver-signature {
+            width: 200px; /* Fixed width for signature line */
+            text-align: center;
+            padding-top: 5px;
+            border-top: 1px solid #000;
+        }
+        .company-signature {
+            text-align: right;
+            line-height: 1.4;
+            padding-top: 5px; /* Space above "For, Jag Janani Engineering" */
+        }
+        .company-signature strong {
+            display: block;
+            margin-top: 25px; /* Space for signature line itself */
+            border-top: 1px solid #000; /* Signature line */
+            padding-top: 5px; /* Padding for the text "Signature Placeholder" below the line */
+            font-weight: normal; /* Make the placeholder text not bold */
+            font-size: 12px; /* Smaller font for placeholder */
+            text-align: center; /* Center placeholder under the line */
+            width: 180px; /* Width of the signature line */
+            margin-left: auto; /* Push it to the right */
+        }
+        .company-signature span {
+            display: block; /* Ensure "For, Jag Janani Engineering" is on its own line */
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="challan-container">
+        <div class="header">
+            <div class="delivery-challan-text">DELIVERY CHALLAN</div>
+            <div class="company-logo-section">
+                <span class="je-initials">JE</span><span class="company-name">Jag Janani Engineering</span>
+            </div>
+            <div class="tagline">THREAD ROLLING & CENTERLESS GRINDER</div>
+            <div class="gstin">(GSTIN : 27AUAPP6927B1ZP)</div>
+            <div class="address-contact">
+                <span>Plot No - 07, Survey No - 107/2, Shirsath Mala Near Ambad Gaon, Near Datir Mala,</span>
+                <span>(Municipal Corporation) Ambad Road, Nashik - 422 010. Mob. No. 982352341, 7030979206</span>
+                <span>E-Mail: anandpatilrammhatre389@gmail.com</span>
+            </div>
+        </div>
+
+        <div class="details-row">
+            <div class="details-item">
+                <span class="details-label">M/s.</span>
+                <input type="text" class="details-input" value="J.A. Industries">
+            </div>
+            <div class="details-item right">
+                <span class="details-label">D. Ch. No.:</span>
+                <input type="text" class="details-input small-width" value="372">
+            </div>
+        </div>
+        <div class="details-row">
+            <div class="details-item">
+                <input type="text" class="details-input full-width" value="H No. Sadguri Housing">
+            </div>
+            <div class="details-item right">
+                <span class="details-label">Date:</span>
+                <input type="text" class="details-input small-width" value="28/7/2025">
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th class="table-sr">Sr. No.</th>
+                    <th class="table-description">Description</th>
+                    <th class="table-qty">Qty</th>
+                    <th class="table-remark">Remark</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="table-sr">1</td>
+                    <td class="description-content">
+                        5011230207 Abert Hex<br>
+                        M.S. Rolling<br><br>
+                        BMS-6013
+                    </td>
+                    <td class="table-qty">862 Nos</td>
+                    <td class="table-remark-content">
+                        28 Kg<br>
+                        (28 Kg)
+                    </td>
+                </tr>
+                <tr>
+                    <td class="table-sr">2</td>
+                    <td class="description-content">
+                        5011230055 ø 19 X 10 X 29.8 th.<br>
+                        P.N. Coating<br><br>
+                        BMS-6012
+                    </td>
+                    <td class="table-qty">2270 Nos</td>
+                    <td class="table-remark-content">
+                        7500 / 00<br>
+                        (7500)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td><td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td></td><td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td></td><td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td></td><td></td><td></td><td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="footer">
+            <div class="receiver-signature">Receiver Signature</div>
+            <div class="company-signature">
+                <span>For, Jag Janani Engineering</span>
+                <strong>Signature Placeholder</strong>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

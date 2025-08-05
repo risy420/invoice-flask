@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Challan - Jag Janani Engineering</title>
+    <style>
+        /* General Reset/Base */
+        body {
+            font-family: 'Times New Roman', Times, serif; /* Often used in print documents, or a sans-serif like Arial */
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top */
+            min-height: 100vh; /* Ensure it takes full viewport height for centering */
+        }
+
+        .challan-container {
+            width: 794px; /* Aprox 21cm @ 96dpi, adjusting based on visual width */
+            padding: 20px 30px; /* Adjust padding to match borders from edges */
+            border: 1px solid #000;
+            background-color: #FFF8E1; /* A light, slightly desaturated yellow for the paper */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+            margin: 20px 0; /* Add margin top/bottom to body for visual spacing */
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            line-height: 1.2;
+            margin-bottom: 15px; /* Space before first HR */
+        }
+        .header .delivery-challan-text {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px; /* Space below "DELIVERY CHALLAN" */
+        }
+        .company-logo-section {
+            display: flex;
+            align-items: center; /* Align items vertically in center */
+            justify-content: center;
+            margin-bottom: 5px; /* Space below company name */
+        }
+        .company-logo-section .je-initials {
+            font-size: 48px;
+            font-weight: bold;
+            line-height: 1;
+            margin-right: 5px;
+            /* Styles for consistency if logo not present */
+            display: inline-flex; /* Use flex to vertically align JE if needed */
+            align-items: center;
+            justify-content: center;
+            height: 50px; /* Match desired logo height */
+        }
+        /* New style for the imported company logo */
+        .company-logo {
+            max-height: 50px; /* Limit logo height */
+            max-width: 150px; /* Limit logo width to prevent overflow */
+            object-fit: contain; /* Ensures the image scales properly within its bounds */
+            margin-right: 5px; /* Space between logo and company name */
+        }
+        .company-logo-section .company-name {
+            font-family: Arial, sans-serif; /* Keep Arial for company name as it's common */
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 1;
+            letter-spacing: 0.5px;
+            /* margin-top: 10px; Removed, let align-items: center handle it */
+        }
+        .tagline {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 5px;
+            padding-bottom: 5px; /* For padding before the hr */
+            border-bottom: 1px solid #000; /* Replaces HR for tagline line */
+        }
+        .gstin {
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 8px; /* Space after tagline HR */
+        }
+        .address-contact {
+            font-size: 12px;
+            line-height: 1.4; /* Adjust line height for address block */
+            margin-top: 10px;
+            padding-bottom: 10px; /* Padding before the next HR */
+            border-bottom: 1px solid #000; /* Replaces HR for address line */
+        }
+        .address-contact span {
+            display: block; /* Ensure each line breaks */
+        }
+
+        /* Details Rows */
+        .details-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline; /* Align text baselines */
+            margin-top: 12px; /* Consistent spacing between detail rows */
+            font-size: 14px;
+        }
+        .details-item {
+            flex: 1;
+            display: flex;
+            align-items: baseline;
+        }
+        .details-item.right {
+            justify-content: flex-end; /* Align right items to the right */
+        }
+        .details-label {
+                white-space: nowrap; /* Prevent label from wrapping */
+        }
+        .details-input {
+            border: none;
+            border-bottom: 1px dotted #000; /* Dotted line for handwritten input */
+            padding: 2px 5px;
+            font-size: 14px;
+            background-color: transparent;
+            flex-grow: 1; /* Allow input to take remaining space */
+            margin-left: 5px; /* Space between label and input */
+            min-width: 100px; /* Ensure input has a minimum width */
+            text-align: left; /* Default text alignment for inputs */
+        }
+        .details-input.small-width {
+            width: 120px; /* Specific width for D. Ch. No. and Date */
+            flex-grow: 0; /* Don't let it grow */
+            text-align: left;
+        }
+        .details-input.full-width {
+            width: 100%;
+            flex-grow: 1;
+        }
+        /* Overriding specific input widths for the M/s line */
+        .details-row:nth-of-type(1) .details-item:first-child .details-input {
+            width: 250px; /* Adjust width for 'J.A. Industries' */
+            flex-grow: 0;
+        }
+        .details-row:nth-of-type(2) .details-item:first-child .details-input {
+            width: 250px; /* Adjust width for 'H No. Sadguri Housing' */
+            flex-grow: 0;
+        }
+        .gst-in-brackets {
+            font-size: 12px; /* Slightly smaller for the bracketed GST */
+            margin-left: 5px; /* Small space after company name input */
+            white-space: nowrap; /* Prevent GST from wrapping */
+        }
+
+
+        /* Table Section */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px; /* Space after details rows */
+            font-size: 13px; /* Slightly smaller font for table content */
+        }
+        table, th, td {
+            border: 1px solid #000;
+        }
+        th, td {
+            padding: 6px 8px; /* Adjust padding for cell content */
+            text-align: left;
+            vertical-align: top; /* Align content to top of cells */
+        }
+        th {
+            background-color: #e9e9e9; /* Light grey background for headers */
+            font-weight: bold;
+        }
+        .table-sr {
+            width: 40px; /* Specific width for Sr. No. */
+            text-align: center;
+        }
+        /* New column widths (adjust as needed) */
+        .table-description {
+            width: 30%;
+        }
+        .table-hsn {
+            width: 15%;
+        }
+        .table-qty {
+            width: 10%;
+            text-align: center;
+        }
+        .table-weight {
+            width: 15%;
+        }
+        .table-challan-no {
+            width: 15%;
+        }
+        /* End new column widths */
+
+        .description-content {
+            height: 90px; /* Fixed height for description cells to mimic spacing */
+            line-height: 1.4; /* Adjust line height within description */
+        }
+        .table-remark-content {
+            line-height: 1.4;
+        }
+        /* Ensure empty rows have height */
+        table tbody tr:nth-child(n+3) td {
+            height: 25px; /* Height for empty rows */
+            padding-top: 2px; /* Small padding */
+            padding-bottom: 2px;
+        }
+
+        /* Footer Section */
+        .footer {
+            margin-top: 40px; /* Space after table */
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end; /* Align signatures at the bottom */
+            font-size: 14px;
+        }
+        .receiver-signature {
+            width: 200px; /* Fixed width for signature line */
+            text-align: center;
+            padding-top: 5px;
+            border-top: 1px solid #000;
+        }
+        .company-signature {
+            text-align: right;
+            line-height: 1.4;
+            padding-top: 5px; /* Space above "For, Jag Janani Engineering" */
+        }
+        .company-signature strong {
+            display: block;
+            margin-top: 25px; /* Space for signature line itself */
+            border-top: 1px solid #000; /* Signature line */
+            padding-top: 5px; /* Padding for the text "Signature Placeholder" below the line */
+            font-weight: normal; /* Make the placeholder text not bold */
+            font-size: 12px; /* Smaller font for placeholder */
+            text-align: center; /* Center placeholder under the line */
+            width: 180px; /* Width of the signature line */
+            margin-left: auto; /* Push it to the right */
+        }
+        .company-signature span {
+            display: block; /* Ensure "For, Jag Janani Engineering" is on its own line */
+            margin-bottom: 3px;
+        }
+
+        /* Styles for the download button */
+        #downloadChallanBtn {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        /* Hide button when printing */
+        @media print {
+            #downloadChallanBtn {
+                display: none !important;
+            }
+            /* Optional: Adjust margins or padding for print */
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .challan-container {
+                border: none; /* Remove border in print for cleaner look */
+                box-shadow: none; /* Remove shadow in print */
+                margin: 0;
+                padding: 0; /* Adjust if needed for full bleed print */
+                width: 100%; /* Take full width on print */
+            }
+        }
+    </style>
+</head>
+<body>
+    <button id="downloadChallanBtn">
+        Download as PDF
+    </button>
+
+    <div class="challan-container">
+        <div class="header">
+            <div class="delivery-challan-text">DELIVERY CHALLAN</div>
+            <div class="company-logo-section">
+                
+                    <img src="/static/uploads/logos/jagnanni%20logo.png" alt="Gaud Logo" class="company-logo">
+                
+                <span class="company-name">Gaud</span>
+            </div>
+            <div class="tagline">good work</div>
+            <div class="gstin">(GSTIN : 33434DFGF5543)</div>
+            <div class="address-contact">
+                <span>44, Shramik Nagar, Mali Colony, Satpur Nashik- 422012</span>
+                <span>Mob. No. 9975543730</span>
+                <span>E-Mail: gaudrishikesh113@gmail.com</span>
+            </div>
+        </div>
+
+        <div class="details-row">
+            <div class="details-item">
+                <span class="details-label">M/s.</span>
+                <input type="text" class="details-input" value="Rishi Interprises">
+                <span class="gst-in-brackets">(GSTIN :- 123456)</span>
+            </div>
+            <div class="details-item right">
+                <span class="details-label">D. Ch. No.:</span>
+                <input type="text" class="details-input small-width" value="567">
+            </div>
+        </div>
+        <div class="details-row">
+            <div class="details-item">
+                <input type="text" class="details-input full-width" value="">
+            </div>
+            <div class="details-item right">
+                <span class="details-label">Date:</span>
+                <input type="text" class="details-input small-width" value="2025-08-01">
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th class="table-sr">Sr. No.</th>
+                    <th>Description</th>
+                    <th>HSN</th>
+                    <th>Quantity</th>
+                    <th>Weight</th>
+                    <th>Challan No.</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr>
+                    <td class="table-sr">1</td>
+                    <td>rolling</td>
+                    <td>244444</td>
+                    <td>23</td>
+                    <td>323</td>
+                    <td>121</td>
+                </tr>
+                
+                <tr>
+                    <td class="table-sr">2</td>
+                    <td>fcds</td>
+                    <td>2345</td>
+                    <td>34</td>
+                    <td>34</td>
+                    <td>121</td>
+                </tr>
+                
+                <tr>
+                    <td class="table-sr">3</td>
+                    <td>dgfd</td>
+                    <td>34</td>
+                    <td>34</td>
+                    <td>33</td>
+                    <td>345</td>
+                </tr>
+                
+                <tr>
+                    <td class="table-sr">4</td>
+                    <td>Refinining bot</td>
+                    <td>2345</td>
+                    <td>456</td>
+                    <td>456</td>
+                    <td>345</td>
+                </tr>
+                
+                <tr>
+                    <td class="table-sr">5</td>
+                    <td>drill</td>
+                    <td>543</td>
+                    <td>34</td>
+                    <td>34</td>
+                    <td>345</td>
+                </tr>
+                
+                
+                 
+                <tr>
+                    <td class="table-sr">6</td><td></td><td></td><td></td><td></td><td></td>
+                </tr>
+                
+            </tbody>
+        </table>
+
+        <div class="footer">
+            <div class="receiver-signature">Receiver Signature</div>
+            <div class="company-signature">
+                <span>For, Gaud</span>
+                <strong>Signature Placeholder</strong>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('downloadChallanBtn').addEventListener('click', function() {
+            // Trigger the browser's print dialog
+            // In this dialog, the user can choose "Save as PDF" as their printer option.
+            window.print();
+        });
+    </script>
+</body>
+</html>

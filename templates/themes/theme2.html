@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice Preview - Theme 2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+        .header, .section, .items, .footer {
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: navy;
+            margin-bottom: 5px;
+        }
+        .info-block {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .info-block-right {
+            text-align: right;
+        }
+        .title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 20px 0;
+            border: 2px solid navy;
+            padding: 5px;
+            background-color: #f0f0f0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 6px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .no-border td {
+            border: none;
+            padding: 4px 6px;
+        }
+        .terms {
+            font-size: 13px;
+            margin-top: 30px;
+        }
+        .footer {
+            text-align: right;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>{{ company_name }}</h1>
+    <div class="info-block">
+        <p>{{ company_address }}</p>
+        <p>Email: {{ company_email }}</p>
+        <p>Phone: {{ company_phone }}</p>
+        <p><strong>GSTIN:</strong> {{ company_gstin }}</p>
+        <li><strong>Description:</strong> {{ company_description }}</li>
+
+    </div>
+</div>
+
+<div class="title">DELIVERY CHALLAN</div>
+
+<div class="section">
+    <table class="no-border">
+        <tr>
+            <td><strong>M/S:</strong> {{ customer or 'N/A' }}</td>
+            <td><strong>Challan No:</strong> {{ invoice_number or 'N/A' }}</td>
+        </tr>
+        <tr>
+            <td><strong>Address:</strong> (To be filled if available)</td>
+            <td><strong>Challan Date:</strong> {{ invoice_date or 'N/A' }}</td>
+        </tr>
+        <tr>
+            <td><strong>Phone:</strong> (Optional)</td>
+            <td><strong>Transport:</strong> (Optional)</td>
+        </tr>
+        <tr>
+            <td><strong>GSTIN:</strong> {{ gst_number or 'N/A' }}</td>
+            <td><strong>Vehicle No:</strong> (Optional)</td>
+        </tr>
+    </table>
+</div>
+
+<div class="items">
+    <table>
+        <thead>
+            <tr>
+                <th>Sr. No.</th>
+                <th>Name of Product / Service</th>
+                <th>HSN / SAC</th>
+                <th>Qty</th>
+                <th>Rate</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if items %}
+                {% for item in items %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.hsn }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>₹{{ item.rate or 0 }}</td>
+                    <td>₹{{ item.total or 0 }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="6">No items added.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" style="text-align: right;"><strong>Total Amount</strong></td>
+                <td><strong>₹{{ total_amount or 0 }}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div class="section">
+    <p><strong>Total in Words:</strong> {{ total_in_words or 'ZERO RUPEES ONLY' }}</p>
+</div>
+
+<div class="terms">
+    <p><strong>Terms & Conditions:</strong></p>
+    <ol>
+        <li>Subject to local jurisdiction.</li>
+        <li>Our responsibility ceases as goods leave premises.</li>
+        <li>No returns after delivery.</li>
+        <li>Delivery is ex-premises.</li>
+    </ol>
+</div>
+
+<div class="footer">
+    <p>For {{ company_name }}</p>
+    <br><br>
+    <p>(Authorized Signatory)</p>
+</div>
+<div style="text-align: center; margin-top: 40px;">
+    <button onclick="window.print()" style="padding: 10px 20px; font-size: 16px;">Download / Print Invoice</button>
+</div>
+</body>
+</html>

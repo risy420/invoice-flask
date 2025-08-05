@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: invoice-flask-app
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn --bind 0.0.0.0:$PORT app:app"
+    region: singapore
+    plan: free

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Challan - Compact</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 10px; background-color: #f8f9fa; color: #212529; font-size: 0.9em; }
+        .challan-container {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            padding: 15px; /* Reduced padding */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Lighter shadow */
+            max-width: 700px; /* Narrower */
+            margin: 10px auto;
+        }
+        .header-section, .receiver-section {
+            margin-bottom: 10px; /* Reduced margin */
+        }
+        .header-section div, .receiver-section div {
+            margin-bottom: 2px; /* Very small margin */
+            font-size: 0.85em;
+        }
+        .header-section label, .receiver-section label {
+            font-weight: bold;
+            margin-right: 3px;
+        }
+        .product-table th, .product-table td {
+            vertical-align: middle;
+            padding: 4px; /* Reduced padding */
+            border: 1px solid #dee2e6;
+            font-size: 0.8em; /* Smaller text */
+        }
+        .product-table th {
+            background-color: #e9ecef;
+            text-align: left;
+        }
+        .text-center { text-align: center; }
+        .text-end { text-align: right; }
+        .mt-4 { margin-top: 1rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        h3 { color: #0d6efd; font-size: 1.2em; }
+        h5 { font-size: 1em; margin-bottom: 0.5rem;}
+        hr { margin-top: 1rem; margin-bottom: 1rem;}
+    </style>
+</head>
+<body>
+    <div class="challan-container">
+        <h3 class="text-center mb-4">DELIVERY CHALLAN - COMPACT FORMAT</h3>
+
+        <div class="row header-section">
+            <div class="col-md-6">
+                <h5>Sender Details</h5>
+                <div><label>Company Name:</label> <span>Gaud</span></div>
+                <div><label>GST Number:</label> <span>33434DFGF5543</span></div>
+                <div><label>Address:</label> <span>44, Shramik Nagar, Mali Colony, Satpur Nashik- 422012</span></div>
+                <div><label>Phone:</label> <span>9975543730</span></div>
+                <div><label>Email:</label> <span>gaudrishikesh113@gmail.com</span></div>
+                <div><label>Description:</label> <span>good work</span></div>
+            </div>
+            <div class="col-md-6 receiver-section text-end">
+                <h5>Challan Details</h5>
+                <div><label>Challan Date:</label> <span>2025-08-01</span></div>
+                <div><label>Challan Number:</label> <span></span></div>
+                <h5 class="mt-4">Receiver Details</h5>
+                <div><label>Company Name:</label> <span>Rishi Interprises</span></div>
+                <div><label>GST Number:</label> <span>123456</span></div>
+            </div>
+        </div>
+
+        <hr>
+
+        <h5 class="mb-3">Product Details</h5>
+        <table class="table table-bordered product-table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>HSN</th>
+                    <th>Quantity</th>
+                    <th>Weight</th>
+                    <th>Challan No.</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr>
+                    <td>rolling</td>
+                    <td>244444</td>
+                    <td>23</td>
+                    <td>323</td>
+                    <td>121</td>
+                </tr>
+                
+                <tr>
+                    <td>fcds</td>
+                    <td>2345</td>
+                    <td>34</td>
+                    <td>34</td>
+                    <td>121</td>
+                </tr>
+                
+                <tr>
+                    <td>dgfd</td>
+                    <td>34</td>
+                    <td>34</td>
+                    <td>33</td>
+                    <td>345</td>
+                </tr>
+                
+                <tr>
+                    <td>Refinining bot</td>
+                    <td>2345</td>
+                    <td>456</td>
+                    <td>456</td>
+                    <td>345</td>
+                </tr>
+                
+                <tr>
+                    <td>drill</td>
+                    <td>543</td>
+                    <td>34</td>
+                    <td>34</td>
+                    <td>345</td>
+                </tr>
+                
+                
+            </tbody>
+        </table>
+
+        <div class="mt-4">
+            <p>Signature: __________________________</p>
+            <p class="text-muted">This is a system-generated delivery challan.</p>
+        </div>
+    </div>
+</body>
+</html>

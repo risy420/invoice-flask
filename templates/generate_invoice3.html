@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Generate Invoice</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body { padding-top: 70px; background-color: #f8f9fa; }
+    .invoice-section {
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-top: 30px;
+    }
+    .header-details div {
+      margin-bottom: 10px;
+    }
+    .header-details label {
+      font-weight: bold;
+      margin-right: 5px;
+    }
+    .product-table th, .product-table td {
+        vertical-align: middle;
+    }
+    .product-row-controls {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{{ url_for('index') }}">WorkshopSys</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        {% if g.user %}
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('add_challan') }}">Add Challan</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('company_view') }}">View Company</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('generate_invoice') }}">Generate Invoice</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('profile') }}">Profile ({{ g.user['Company Name'] }})</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+        {% else %}
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Register</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container invoice-section">
+  <h3 class="mb-4 text-center">Generate Invoice</h3>
+  <form id="invoiceForm">
+    <div class="row mb-5">
+      <div class="col-md-6">
+        <h5 class="mb-3">Sender Details</h5>
+        <!-- <pre>{{ sender_details }}</pre> -->
+         <!-- <pre style="background-color: #f0f0f0; padding: 10px; border: 1px solid #ccc;">{{ sender_details }}</pre> -->
+        <div class="header-details">
+          <div><label>Company Name:</label> <span>{{ sender_details['Company Name'] }}</span></div>
+          <div><label>GST Number:</label> <span>{{ sender_details['GST Number'] }}</span></div> {# ADDED THIS LINE #}
+          <div><label>Address:</label> <span>{{ sender_details['Address'] }}</span></div>
+          <div><label>Phone:</label> <span>{{ sender_details['Phone'] }}</span></div>
+          <div><label>Email:</label> <span>{{ sender_details['Email'] }}</span></div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <h5 class="mb-3">Receiver Details</h5>
+        <div class="mb-3">
+          <label for="receiverWorkshop" class="form-label">Company Name</label>
+          <input type="text" class="form-control" id="receiverWorkshop" name="receiverWorkshop" placeholder="Receiver Company Name" required>
+        </div>
+        <div class="mb-3">
+          <label for="receiverGST" class="form-label">GST Number</label>
+          <input type="text" class="form-control" id="receiverGST" name="receiverGST" placeholder="Receiver GST Number">
+        </div>
+        <div class="mb-3">
+          <label for="invoiceDate" class="form-label">Invoice Date</label>
+          <input type="date" class="form-control" id="invoiceDate" name="invoiceDate" required>
+        </div>
+        <div class="mb-3">
+          <label for="invoiceNumber" class="form-label">Invoice Number</label>
+          <input type="text" class="form-control" id="invoiceNumber" name="invoiceNumber" placeholder="INV-001" required>
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-4">
+
+    <h5 class="mb-3">Product Details</h5>
+    <div class="table-responsive">
+      <table class="table table-bordered product-table">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>HSN</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Rate (₹)</th>
+            <th>Total (₹)</th>
+            <th></th> </tr>
+        </thead>
+        <tbody id="invoiceItems">
+          <tr>
+            <td><input type="text" class="form-control" name="product_description[]"></td>
+            <td><input type="text" class="form-control" name="product_hsn[]"></td>
+            <td><input type="number" class="form-control qty" name="product_quantity[]" min="0"></td>
+            <td><input type="text" class="form-control" name="product_unit[]"></td>
+            <td><input type="number" class="form-control rate" name="product_rate[]" step="0.01" min="0"></td>
+            <td><input type="number" class="form-control item_total" readonly></td>
+            <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">X</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button type="button" class="btn btn-secondary mt-3" onclick="addRow()">+ Add Row</button>
+
+    <div class="mt-4 text-end">
+      <strong>Grand Total: ₹<span id="grandTotal">0.00</span></strong>
+    </div>
+<button type="button" onclick="openThemeSelector()">Select Theme</button>
+<style>
+  #themeSelector {
+    position: fixed;
+    top: 0;
+    right: -350px;
+    width: 350px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+    transition: right 0.3s;
+    z-index: 9999;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  .theme-option {
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .theme-option:hover {
+    background-color: #f0f0f0;
+  }
+</style>
+
+<div id="themeSelector">
+  <h3>Select Invoice Theme</h3>
+  <div id="themes">
+    <!-- 10 dummy themes -->
+    {% for i in range(1, 5) %}
+      <div class="theme-option" onclick="selectTheme('theme{{ i }}')">
+        Theme {{ i }}
+      </div>
+    {% endfor %}
+  </div>
+  <button onclick="closeThemeSelector()">Close</button>
+</div>
+
+    <!-- <button type="submit" class="btn btn-success mt-4 w-100">Generate PDF / Print</button> -->
+     <div id="generateSection">
+  <button type="submit" class="btn btn-success mt-4 w-100">Generate PDF / Print</button>
+</div>
+
+  </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  let selectedTheme = null;
+
+  function openThemeSelector() {
+    document.getElementById("themeSelector").style.right = "0";
+  }
+
+  function closeThemeSelector() {
+    document.getElementById("themeSelector").style.right = "-350px";
+  }
+
+  function selectTheme(themeName) {
+    selectedTheme = themeName;
+    alert("Theme selected: " + themeName);
+
+    const existingBtn = document.getElementById("previewBtn");
+    if (!existingBtn) {
+      const previewBtn = document.createElement("button");
+previewBtn.textContent = "Preview Invoice";
+previewBtn.id = "previewBtn";
+previewBtn.className = "btn btn-primary mt-4 w-100";  // match bootstrap
+previewBtn.onclick = function () {
+  const form = document.getElementById("invoiceForm");
+  form.action = "/preview_invoice/" + selectedTheme;
+  form.method = "POST";
+  form.submit();
+};
+      document.getElementById("generateSection").innerHTML = "";
+      document.getElementById("generateSection").appendChild(previewBtn);
+    }
+
+    closeThemeSelector();
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    // Set current date for invoice date
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const dd = String(today.getDate()).padStart(2, '0');
+    document.getElementById('invoiceDate').value = `${yyyy}-${mm}-${dd}`;
+
+    // Event listener for input changes to recalculate totals
+    document.getElementById('invoiceItems').addEventListener('input', calculateTotals);
+
+    // Check if company name is passed from company_view.html
+    const urlParams = new URLSearchParams(window.location.search);
+    const companyName = urlParams.get('company');
+    if (companyName) {
+      document.getElementById('receiverWorkshop').value = companyName;
+      fetchCompanyProductsForInvoice(companyName);
+      fetchReceiverDetails(companyName); // ADDED: Call to fetch receiver's GST and other details
+    }
+  });
+
+  async function fetchReceiverDetails(companyName) {
+    console.log('Fetching receiver details for:', companyName);
+    try {
+      const response = await fetch(`/company_details/${encodeURIComponent(companyName)}`);
+      const data = await response.json();
+      console.log('Receiver details API response:', data);
+
+      if (response.ok && data.details && data.details.length > 0) {
+        const receiverGST = data.details[0]['GST Number'];
+        console.log('Extracted Receiver GST:', receiverGST);
+        if (receiverGST) {
+          document.getElementById('receiverGST').value = receiverGST;
+        }
+      } else {
+        console.warn('Could not fetch receiver GST details or no challans found for this company.');
+        document.getElementById('receiverGST').value = '';
+      }
+    } catch (error) {
+      console.error('Error fetching receiver details:', error);
+      document.getElementById('receiverGST').value = '';
+    }
+  }
+
+  function addRow(description = '', hsn = '', quantity = '', unit = '', rate = '') {
+    const invoiceItems = document.getElementById('invoiceItems');
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td><input type="text" class="form-control" name="product_description[]" value="${description}"></td>
+      <td><input type="text" class="form-control" name="product_hsn[]" value="${hsn}"></td>
+      <td><input type="number" class="form-control qty" name="product_quantity[]" value="${quantity}" min="0"></td>
+      <td><input type="text" class="form-control" name="product_unit[]" value="${unit}"></td>
+      <td><input type="number" class="form-control rate" name="product_rate[]" value="${rate}" step="0.01" min="0"></td>
+      <td><input type="number" class="form-control item_total" readonly></td>
+      <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">X</button></td>
+    `;
+    invoiceItems.appendChild(row);
+    calculateTotals(); // Recalculate after adding a new row
+  }
+
+  function removeRow(button) {
+    button.closest('tr').remove();
+    calculateTotals(); // Recalculate after removing a row
+  }
+
+  function calculateTotals() {
+    let grandTotal = 0;
+    const rows = document.querySelectorAll('#invoiceItems tr');
+
+    rows.forEach(row => {
+      const quantityInput = row.querySelector('.qty');
+      const rateInput = row.querySelector('.rate');
+      const itemTotalInput = row.querySelector('.item_total');
+
+      const qty = parseFloat(quantityInput.value) || 0;
+      const rate = parseFloat(rateInput.value) || 0;
+
+      const itemTotal = qty * rate;
+      itemTotalInput.value = itemTotal.toFixed(2); // Display with 2 decimal places
+      grandTotal += itemTotal;
+    });
+
+    document.getElementById('grandTotal').textContent = grandTotal.toFixed(2);
+  }
+
+  async function fetchCompanyProductsForInvoice(companyName) {
+    try {
+      const response = await fetch(`/get_company_products/${encodeURIComponent(companyName)}`);
+      const data = await response.json();
+
+      if (response.ok) {
+        const invoiceItems = document.getElementById('invoiceItems');
+        invoiceItems.innerHTML = ''; // Clear existing rows
+
+        if (data.products && data.products.length > 0) {
+          data.products.forEach(product => {
+            // Note: Rate is not stored in challans, so it will be 0 initially
+            addRow(product.description, product.hsn, product.quantity, product.unit, '');
+          });
+        } else {
+          // Add a single empty row if no products found
+          addRow();
+        }
+      } else {
+        alert('Error fetching company products: ' + data.message);
+        addRow(); // Add a single empty row on error
+      }
+    } catch (error) {
+      console.error('Error fetching company products:', error);
+      alert('An unexpected error occurred while loading company products.');
+      addRow(); // Add a single empty row on fetch error
+    }
+  }
+
+  // Initial calculation for the first row if present
+  calculateTotals();
+
+  // You would add submission logic here if you want to save the invoice or generate a PDF
+  document.getElementById('invoiceForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    alert('Invoice generation logic would go here!');
+    // Example of collecting data:
+    // const senderName = "{{ sender_details['Company Name'] }}";
+    // const receiverName = document.getElementById('receiverWorkshop').value;
+    // const receiverGST = document.getElementById('receiverGST').value; // Get receiver GST
+    // const invoiceDate = document.getElementById('invoiceDate').value;
+    // const invoiceNumber = document.getElementById('invoiceNumber').value;
+    // const products = [];
+    // document.querySelectorAll('#invoiceItems tr').forEach(row => {
+    //   products.push({
+    //     description: row.querySelector('[name="product_description[]"]').value,
+    //     hsn: row.querySelector('[name="product_hsn[]"]').value,
+    //     quantity: row.querySelector('[name="product_quantity[]"]').value,
+    //     unit: row.querySelector('[name="product_unit[]"]').value,
+    //     rate: row.querySelector('[name="product_rate[]"]').value,
+    //     total: row.querySelector('.item_total').value
+    //   });
+    // });
+    // console.log({ senderName, receiverName, receiverGST, invoiceDate, invoiceNumber, products, grandTotal: document.getElementById('grandTotal').textContent });
+  });
+</script>
+
+</body>
+</html>

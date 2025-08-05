@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ company_name }} - Tax Invoice</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            color: #000;
+            font-size: 12px;
+            line-height: 1.4;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header .title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .tagline {
+            font-size: 14px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+
+        .company-details {
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .company-details p {
+            margin: 0;
+        }
+
+        .company-details .gstin {
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .invoice-details,
+        .customer-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            border: 1px solid #000;
+            padding: 5px;
+        }
+
+        .invoice-details > div,
+        .customer-details > div {
+            flex: 1;
+            padding: 5px;
+            min-height: 50px;
+        }
+
+        .invoice-details .left,
+        .customer-details .left {
+            border-right: 1px solid #000;
+        }
+
+        .invoice-details p,
+        .customer-details p {
+            margin: 0;
+            padding: 2px 0;
+        }
+
+        .customer-details .bold {
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+
+        th,
+        td {
+            border: 1px solid #000;
+            padding: 6px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        td:nth-child(1), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child(6) {
+            text-align: center;
+        }
+
+        tfoot tr td {
+            font-weight: bold;
+            text-align: right;
+            border: none;
+        }
+
+        tfoot tr.total-row td {
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
+        }
+
+        tfoot tr.tax-row td {
+            border: none;
+            padding-left: 10px;
+        }
+
+        tfoot tr.tax-row td:last-child {
+            border: 1px solid #000;
+            text-align: center;
+        }
+
+        .amount-in-words {
+            margin-top: 20px;
+            font-weight: bold;
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
+            padding: 5px 0;
+        }
+
+        .signature-box {
+            margin-top: 40px;
+            text-align: right;
+        }
+
+        .signature-box p {
+            margin: 0;
+            padding: 2px 0;
+        }
+
+        .signature-box .for-company {
+            font-weight: bold;
+            margin-bottom: 50px;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 2px;
+            font-size: 12px;
+        }
+        #challan-content {
+    border: 2px solid #333;
+    padding: 40px;
+    margin: 20px auto;
+    max-width: 800px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Optional: Prevent borders from printing on extra UI elements */
+@media print {
+    body {
+        -webkit-print-color-adjust: exact;
+    }
+    button {
+        display: none !important;
+    }
+}
+    </style>
+</head>
+
+<body>
+<div id="challan-content">
+    <div class="header">
+        <div class="title">TAX INVOICE</div>
+        {% if logo_path %}
+  <!-- <div style="text-align: right;"> -->
+    <img src="{{ url_for('static', filename=logo_path) }}" alt="Company Logo" style="height: 80px;">
+  <!-- </div> -->
+{% endif %}
+
+
+        <div class="company-name">{{ company_name }}</div>
+        <div class="tagline">{{ company_description }}</div>
+    </div>
+<hr>
+    <div class="company-details">
+        <p class="gstin">GSTIN: {{ company_gstin }}</p>
+        <p>{{ company_address }}</p>
+        <p>Mob No: {{ company_phone }}</p>
+        <p>E-Mail: {{ company_email }}</p>
+    </div>
+
+    <div class="invoice-details">
+        <div class="left">
+            <p><strong>M/S:</strong> {{ customer or 'N/A' }}</p>
+            <p><strong>Address:</strong> {{ receiver_address or 'N/A' }}</p>
+            <p><strong>Phone:</strong> {{ receiver_phone or 'N/A' }}</p>
+            <p><strong>Email:</strong> {{ receiver_email or 'N/A' }}</p>
+            <p><strong>GSTIN:</strong> {{ gst_number or 'N/A' }}</p>
+        </div>
+        <div class="right">
+            <p><strong>Invoice No.:</strong> {{ invoice_number or 'N/A' }}</p>
+            <p><strong>Order No.:</strong> {{ order_number or 'N/A' }}</p>
+            <p><strong>Transporter:</strong> {{ transport or 'N/A' }}</p>
+            <p><strong>Vehicle No.:</strong> {{ vehicle_no or 'N/A' }}</p>
+            <p><strong>Date:</strong> {{ invoice_date or 'N/A' }}</p>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>PARTICULAR</th>
+                <th>SAC Code</th>
+                <th>Qty</th>
+                <th>Rate</th>
+                <th>Per</th>
+                <th>Amount Rs. Ps.</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set total_taxable_value = 0 %}
+            {% for item in items %}
+            {% set item_total = item.quantity * item.rate %}
+            {% set total_taxable_value = total_taxable_value + item_total %}
+            <tr>
+                <td>{{ item.description }}</td>
+                <td>{{ item.sac or item.hsn }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ "%.2f"|format(item.rate) }}</td>
+                <td>{{ item.per }}</td>
+                <td>{{ "%.2f"|format(item_total) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+    <tr class="total-row">
+        <td colspan="5" style="text-align: right;">Total Taxable Value</td>
+        <td style="text-align: center;" id="taxableValue">0.00</td>
+    </tr>
+    <tr class="tax-row">
+        <td colspan="4" style="text-align: right;">
+            GST Rate (%): <input type="number" id="gstRateInput" value="{{ gst_percent or 6 }}" step="0.1">
+        </td>
+        <td>CGST @ <span id="cgstRate">0</span>%</td>
+        <td id="cgstAmount">0.00</td>
+    </tr>
+    <tr class="tax-row">
+        <td colspan="4"></td>
+        <td>SGST @ <span id="sgstRate">0</span>%</td>
+        <td id="sgstAmount">0.00</td>
+    </tr>
+    <tr class="total-row">
+        <td colspan="5" style="text-align: right;">G. Total</td>
+        <td style="text-align: center;" id="grandTotal">0.00</td>
+    </tr>
+</tfoot>
+
+    </table>
+
+    <!-- <div class="amount-in-words">
+        Rupees {{ total_in_words or 'Zero Only' }}
+    </div> -->
+
+    <div class="signature-box">
+        <p class="for-company">For {{ company_name }}</p>
+        <p>(Authorized Signatory)</p>
+    </div>
+<div style="text-align: right; margin-top: 20px;">
+    <button onclick="downloadPDF()" style="padding: 8px 16px; font-weight: bold; background-color: #4CAF50; color: white; border: none; border-radius: 4px;">
+        Download PDF
+    </button>
+</div>
+<div style="text-align: right; margin-top: 20px;">
+    <button onclick="window.print()" style="padding: 8px 16px; font-weight: bold; background-color: #f57c00; color: white; border: none; border-radius: 4px;">
+        Print Challan
+    </button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+    function downloadPDF() {
+        const element = document.getElementById('challan-content');  // wrap your challan in this ID
+        const opt = {
+            margin:       0.5,
+            filename:     'delivery_challan.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+</script>
+
+    <script>
+    function calculateGST() {
+        let taxable = 0;
+
+        // Loop through all amount cells and sum them
+        document.querySelectorAll("tbody tr").forEach(row => {
+            const amountCell = row.querySelector("td:last-child");
+            const val = parseFloat(amountCell?.innerText || 0);
+            taxable += val;
+        });
+
+        // Set taxable value
+        document.getElementById("taxableValue").innerText = taxable.toFixed(2);
+
+        const gstRate = parseFloat(document.getElementById("gstRateInput").value) || 0;
+        const halfRate = gstRate / 2;
+
+        const cgstAmount = (taxable * halfRate / 100);
+        const sgstAmount = (taxable * halfRate / 100);
+        const total = taxable + cgstAmount + sgstAmount;
+
+        // Update DOM
+        document.getElementById("cgstRate").innerText = halfRate.toFixed(2);
+        document.getElementById("sgstRate").innerText = halfRate.toFixed(2);
+        document.getElementById("cgstAmount").innerText = cgstAmount.toFixed(2);
+        document.getElementById("sgstAmount").innerText = sgstAmount.toFixed(2);
+        document.getElementById("grandTotal").innerText = total.toFixed(2);
+    }
+
+    document.getElementById("gstRateInput").addEventListener("input", calculateGST);
+    window.onload = calculateGST;
+</script>
+
+</div>
+</body>
+</html>

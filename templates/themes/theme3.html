@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Premium Delivery Challan</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 40px;
+            background-color: #fafafa;
+            color: #333;
+        }
+
+        .company-name {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        .description-box {
+            background-color: #e0e7ff;
+            border-left: 6px solid #1e3a8a;
+            padding: 15px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 30px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-block {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .info-left,
+        .info-right {
+            width: 48%;
+            line-height: 1.6;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #1e3a8a;
+            display: inline-block;
+        }
+
+        .receiver-box {
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background-color: #f8fafc;
+            padding: 15px;
+            margin-bottom: 30px;
+        }
+
+        .receiver-box p {
+            margin: 6px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            border: 1px solid #94a3b8;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #e2e8f0;
+        }
+
+        tfoot td {
+            font-weight: bold;
+        }
+
+        .amount-words {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .terms {
+            margin-top: 40px;
+            font-size: 13px;
+        }
+
+        .terms ol {
+            padding-left: 20px;
+        }
+
+        .footer {
+            text-align: right;
+            margin-top: 60px;
+            font-size: 14px;
+        }
+
+        .print-button {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .print-button button {
+            background-color: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .print-button button:hover {
+            background-color: #3742fa;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="company-name">{{ company_name }}</div>
+
+    <div class="description-box">
+        <strong>Description:</strong> {{ company_description }}
+    </div>
+
+    <div class="info-block">
+        <div class="info-left">
+            <p><strong>Address:</strong> {{ company_address }}</p>
+            <p><strong>Email:</strong> {{ company_email }}</p>
+        </div>
+        <div class="info-right">
+            <p><strong>Phone:</strong> {{ company_phone }}</p>
+            <p><strong>GSTIN:</strong> {{ company_gstin }}</p>
+        </div>
+    </div>
+
+    <div class="section-title">DELIVERY CHALLAN</div>
+
+    <div class="receiver-box">
+    <p><strong>M/S:</strong> {{ customer or 'N/A' }}</p>
+    <p><strong>Address:</strong> {{ receiver_address or 'N/A' }}</p>
+    <p><strong>Phone:</strong> {{ receiver_phone or 'N/A' }}</p>
+    <p><strong>Email:</strong> {{ receiver_email or 'N/A' }}</p>
+    <p><strong>GSTIN:</strong> {{ gst_number or 'N/A' }}</p>
+    <p><strong>Transport:</strong> {{ transport or 'N/A' }}</p>
+    <p><strong>Vehicle No:</strong> {{ vehicle_no or 'N/A' }}</p>
+    <p><strong>Challan No:</strong> {{ invoice_number or 'N/A' }}</p>
+    <p><strong>Challan Date:</strong> {{ invoice_date or 'N/A' }}</p>
+</div>
+
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>Sr. No.</th>
+                <th>Name of Product / Service</th>
+                <th>HSN / SAC</th>
+                <th>Qty</th>
+                <th>Rate</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if items %}
+            {% for item in items %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.hsn }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ item.rate or 0 }}</td>
+                <td>₹{{ item.total or 0 }}</td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="6">No items added.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" style="text-align: right;">Total Amount</td>
+                <td>₹{{ total_amount or 0 }}</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="amount-words">
+        <strong>Total in Words:</strong> {{ total_in_words or 'ZERO RUPEES ONLY' }}
+    </div>
+
+    <div class="terms">
+        <strong>Terms & Conditions:</strong>
+        <ol>
+            <li>Subject to local jurisdiction.</li>
+            <li>Our responsibility ceases as goods leave premises.</li>
+            <li>No returns after delivery.</li>
+            <li>Delivery is ex-premises.</li>
+        </ol>
+    </div>
+
+    <div class="footer">
+        <p>For {{ company_name }}</p>
+        <br><br>
+        <p>(Authorized Signatory)</p>
+    </div>
+
+    <div class="print-button">
+        <button onclick="window.print()">Download / Print Invoice</button>
+    </div>
+
+</body>
+
+</html>

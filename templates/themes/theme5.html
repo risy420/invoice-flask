@@ -1,0 +1,27 @@
+<!-- templates/themes/theme1.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice - Theme 1</title>
+    <style>
+    body { font-family: 'Courier New'; background: #fffaf0; }
+    .invoice-box { border: 2px dashed #999; }
+</style>
+
+</head>
+<body>
+    <div class="invoice-box">
+        <h2>Invoice - Theme 1</h2>
+        <p><strong>Customer:</strong> {{ customer }}</p>
+        <hr>
+        <h4>Items:</h4>
+        <ul>
+            {% for item in items %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+        <br>
+        <button onclick="window.print()">Print / Download PDF</button>
+    </div>
+</body>
+</html>
