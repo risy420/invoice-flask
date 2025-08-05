@@ -10,11 +10,17 @@ import mysql.connector
 import csv
 import os
 import mysql.connector
+# db_config = {
+#     'host': 'localhost',
+#     'user': 'root',
+#     'password': 'Rit420@$',
+#     'database': 'challan'
+# }
 db_config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': 'Rit420@$',
-    'database': 'challan'
+    host='db4free.net',
+    user='root',         # your db4free username
+    password='Rit420@$',  # your db4free password
+    database='challan'
 }
 def get_db():
     if 'db' not in g:
@@ -1124,8 +1130,14 @@ from werkzeug.security import generate_password_hash
 from flask import request, redirect, render_template
 
 # MySQL connection setup (place this in a config file ideally)
+# conn = mysql.connector.connect(
+#     host="localhost",
+#     user="root",
+#     password="Rit420@$",
+#     database="challan"
+# )
 conn = mysql.connector.connect(
-    host="localhost",
+    host="db4free.net",
     user="root",
     password="Rit420@$",
     database="challan"
@@ -1520,11 +1532,17 @@ def profile():
 
     user_id = session['user_id']
 
+    # conn = mysql.connector.connect(
+    #     host='localhost',
+    #     user='root',
+    #     password='Rit420@$',
+    #     database='challan'
+    # )
     conn = mysql.connector.connect(
-        host='localhost',
-        user='root',
-        password='Rit420@$',
-        database='challan'
+    host="db4free.net",
+    user="root",
+    password="Rit420@$",
+    database="challan"
     )
     cursor = conn.cursor(dictionary=True)
     
@@ -1679,11 +1697,17 @@ def preview_invoice_with_theme(theme):
     # Try to fetch full receiver details from DB
     receiver_address = receiver_phone = receiver_email = transport = vehicle_no = ""
 
+    # conn = mysql.connector.connect(
+    #     host="localhost",
+    #     user="root",
+    #     password="Rit420@$",
+    #     database="challan"
+    # )
     conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Rit420@$",
-        database="challan"
+    host="db4free.net",
+    user="root",
+    password="Rit420@$",
+    database="challan"
     )
     cursor = conn.cursor(dictionary=True)
     cursor.execute("SELECT * FROM receivers WHERE company_name = %s", (customer,))
@@ -1930,11 +1954,17 @@ import mysql.connector
 
 def get_receiver_details(receiver_id):
     try:
-        connection = mysql.connector.connect(
-            host='localhost',
-            user='root',
-            password='Rit420@$',
-            database='challan'
+        # connection = mysql.connector.connect(
+        #     host='localhost',
+        #     user='root',
+        #     password='Rit420@$',
+        #     database='challan'
+        # )
+        conn = mysql.connector.connect(
+            host="db4free.net",
+            user="root",
+            password="Rit420@$",
+            database="challan"
         )
         cursor = connection.cursor(dictionary=True)
         cursor.execute("SELECT * FROM receiver WHERE id = %s", (receiver_id,))
@@ -1970,11 +2000,17 @@ def generate_challan_html():
     receiver_details = {}
     try:
         company_name = data.get('companyName')
-        connection = mysql.connector.connect(
-            host='localhost',
-            user='root',
-            password='Rit420@$',
-            database='challan'
+        # connection = mysql.connector.connect(
+        #     host='localhost',
+        #     user='root',
+        #     password='Rit420@$',
+        #     database='challan'
+        # )
+        conn = mysql.connector.connect(
+            host="db4free.net",
+            user="root",
+            password="Rit420@$",
+            database="challan"
         )
         cursor = connection.cursor(dictionary=True)
         # cursor.execute("SELECT * FROM receivers WHERE `Company Name` = %s", (company_name,))
