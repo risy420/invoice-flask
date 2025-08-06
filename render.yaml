@@ -14,3 +14,5 @@ services:
         value: XtmBdMHs8T
       - key: DB_NAME
         value: sql12793850
+      - key: DB_PORT
+        value: 3306
