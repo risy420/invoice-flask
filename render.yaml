@@ -7,10 +7,10 @@ services:
     startCommand: gunicorn app:app
     envVars:
       - key: DB_HOST
-        value: db4free.net
+        value: sql12.freesqldatabase.com
       - key: DB_USER
-        value: root
+        value: sql12793850
       - key: DB_PASSWORD
-        value: Rit420@$
+        value: XtmBdMHs8T
       - key: DB_NAME
-        value: challan
+        value: sql12793850
