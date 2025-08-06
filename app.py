@@ -1143,10 +1143,11 @@ from flask import request, redirect, render_template
 #     database="challan"
 # )
 conn = mysql.connector.connect(
-    host="db4free.net",
-    user="root",
-    password="Rit420@$",
-    database="challan"
+    host="sql12.freesqldatabase.com",
+    user="sql12793850",
+    password="XtmBdMHs8T",
+    database="sql12793850",
+    port=3306
 )
 cursor = conn.cursor()
 
@@ -1157,7 +1158,7 @@ from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
 import os
 import csv
-import mysql.connector  # Or from flask_mysqldb import MySQL
+import   # Or from flask_mysqldb import MySQL
 
 UPLOAD_FOLDER = os.path.join("static", "uploads", "logos")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -1545,10 +1546,11 @@ def profile():
     #     database='challan'
     # )
     conn = mysql.connector.connect(
-    host="db4free.net",
-    user="root",
-    password="Rit420@$",
-    database="challan"
+        host="sql12.freesqldatabase.com",
+        user="sql12793850",
+        password="XtmBdMHs8T",
+        database="sql12793850",
+        port=3306
     )
     cursor = conn.cursor(dictionary=True)
     
@@ -1710,10 +1712,11 @@ def preview_invoice_with_theme(theme):
     #     database="challan"
     # )
     conn = mysql.connector.connect(
-    host="db4free.net",
-    user="root",
-    password="Rit420@$",
-    database="challan"
+        host="sql12.freesqldatabase.com",
+        user="sql12793850",
+        password="XtmBdMHs8T",
+        database="sql12793850",
+        port=3306
     )
     cursor = conn.cursor(dictionary=True)
     cursor.execute("SELECT * FROM receivers WHERE company_name = %s", (customer,))
@@ -1967,10 +1970,11 @@ def get_receiver_details(receiver_id):
         #     database='challan'
         # )
         conn = mysql.connector.connect(
-            host="db4free.net",
-            user="root",
-            password="Rit420@$",
-            database="challan"
+            host="sql12.freesqldatabase.com",
+            user="sql12793850",
+            password="XtmBdMHs8T",
+            database="sql12793850",
+            port=3306
         )
         cursor = connection.cursor(dictionary=True)
         cursor.execute("SELECT * FROM receiver WHERE id = %s", (receiver_id,))
@@ -2013,10 +2017,11 @@ def generate_challan_html():
         #     database='challan'
         # )
         conn = mysql.connector.connect(
-            host="db4free.net",
-            user="root",
-            password="Rit420@$",
-            database="challan"
+            host="sql12.freesqldatabase.com",
+            user="sql12793850",
+            password="XtmBdMHs8T",
+            database="sql12793850",
+            port=3306
         )
         cursor = connection.cursor(dictionary=True)
         # cursor.execute("SELECT * FROM receivers WHERE `Company Name` = %s", (company_name,))
