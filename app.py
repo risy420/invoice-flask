@@ -22,11 +22,18 @@ import mysql.connector
 #     password='Rit420@$',  # your db4free password
 #     database='challan'
 # }
+# db_config = {
+#     'host': os.environ.get("DB_HOST"),
+#     'user': os.environ.get("DB_USER"),
+#     'password': os.environ.get("DB_PASSWORD"),
+#     'database': os.environ.get("DB_NAME")
+# }
 db_config = {
-    'host': os.environ.get("DB_HOST"),
-    'user': os.environ.get("DB_USER"),
-    'password': os.environ.get("DB_PASSWORD"),
-    'database': os.environ.get("DB_NAME")
+    'host': os.environ.get('DB_HOST'),
+    'user': os.environ.get('DB_USER'),
+    'password': os.environ.get('DB_PASSWORD'),
+    'database': os.environ.get('DB_NAME'),
+    'port': int(os.environ.get('DB_PORT', 3306))
 }
 def get_db():
     if 'db' not in g:
