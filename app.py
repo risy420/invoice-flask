@@ -1158,7 +1158,7 @@ from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
 import os
 import csv
-import   # Or from flask_mysqldb import MySQL
+import mysql.connector  # Or from flask_mysqldb import MySQL
 
 UPLOAD_FOLDER = os.path.join("static", "uploads", "logos")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
